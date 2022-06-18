@@ -22,8 +22,14 @@ jobs:
         path: path/to/artifact/world.txt
     
     - uses: actions/download-artifact@v3
+      id: test
       with:
-        name: my-artifact
+        name: 'my-artifact'
+        path: path/to/artifacts
+
+    - name: 'Echo download path'
+      run: echo ${{steps.test.outputs.download-path}}
         
-    - name: Display structure of downloaded files
-      run: ls -R
+    
+
+
