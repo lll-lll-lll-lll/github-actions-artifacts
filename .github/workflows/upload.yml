@@ -29,6 +29,9 @@ jobs:
 
     - name: 'Echo download path'
       run: echo ${{steps.test.outputs.download-path}}
+    
+    - name: 'Cat world.txt'
+      run: cat ${{steps.test.outputs.download-path}}
         
     
 
