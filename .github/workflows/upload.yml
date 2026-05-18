@@ -4,35 +4,33 @@ on:
   push:
     branches: [ "master" ]
 
-
-
 jobs:
   upload:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-    - run: mkdir -p path/to/artifact
+      - run: mkdir -p path/to/artifact
 
-    - run: echo hello > path/to/artifact/world.txt
+      - run: echo hello > path/to/artifact/world.txt
 
-    - uses: actions/upload-artifact@v3
-      with:
-        name: my-artifact
-        path: path/to/artifact/world.txt
-    
-    - uses: actions/download-artifact@v3
-      id: test
-      with:
-        name: 'my-artifact'
-        path: path/to/artifacts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: my-artifact
+          path: path/to/artifact/world.txt
 
-    - name: 'Echo download path'
-      run: echo ${{steps.test.outputs.download-path}}
-    
-    - name: 'Cat world.txt'
-      run: cat ${{steps.test.outputs.download-path}}/world.txt
-        
-    
+      - uses: actions/download-artifact@v4
+        id: test
+        with:
+          name: my-artifact
+          path: path/to/artifacts
 
+      - name: 'Echo download path'
+        env:
+          DOWNLOAD_PATH: ${{ steps.test.outputs.download-path }}
+        run: echo "$DOWNLOAD_PATH"
 
+      - name: 'Cat world.txt'
+        env:
+          DOWNLOAD_PATH: ${{ steps.test.outputs.download-path }}
+        run: cat "$DOWNLOAD_PATH/world.txt"
